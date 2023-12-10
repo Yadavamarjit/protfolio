@@ -1,5 +1,5 @@
 export const getYearMonthDifference = (inputDate) => {
-  const currentDate = new Date();
+  const currentDate = new Date(2023, 7, 21);
   const inputDateParts = inputDate.split(":");
   const inputYear = parseInt(inputDateParts[2]);
   const inputMonth = parseInt(inputDateParts[1]) - 1; // JavaScript months are zero-indexed

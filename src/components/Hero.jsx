@@ -1,9 +1,40 @@
 import { motion } from "framer-motion";
 
 import { styles } from "../styles";
-import { ComputersCanvas } from "./canvas";
+import { useEffect, useState } from "react";
 
 const Hero = () => {
+  const [text, setText] = useState("");
+  const techStack = [
+    "JavaScript",
+    "ReactJs",
+    "NodeJs",
+    "ExpressJs",
+    "Python",
+    "AWS",
+    "Fire Base",
+    "GraphQL",
+    "MongoDB",
+  ];
+  const [phraseIndex, setPhraseIndex] = useState(0);
+  const currentPhrase = techStack[phraseIndex];
+  const speed = 50;
+
+  useEffect(() => {
+    let timer = setTimeout(() => {
+      setText(currentPhrase.substring(0, text.length + 1));
+    }, speed);
+
+    if (text === currentPhrase) {
+      clearTimeout(timer);
+      setTimeout(() => {
+        setPhraseIndex((phraseIndex + 1) % techStack.length);
+        setText("");
+      }, 1500); // Wait for 1.5 seconds before displaying the next phrase
+    }
+
+    return () => clearTimeout(timer);
+  }, [text, currentPhrase, phraseIndex, techStack]);
   return (
     <section className={`relative w-full h-screen mx-auto`}>
       <div
@@ -22,10 +53,12 @@ const Hero = () => {
             Fullstack Dev, crafting seamless experiences.
             <br className="sm:block hidden" /> Innovator and problem solver.
           </p>
+          <p className={`${styles.heroSubText} mt-2 text-white-100`}>
+            I craft applications using{" "}
+            <span className="text-[#FFF78A]">{text + "."}</span>
+          </p>
         </div>
       </div>
-
-      <ComputersCanvas />
 
       <div className="absolute xs:bottom-10 bottom-32 w-full flex justify-center items-center">
         <a href="#about">
