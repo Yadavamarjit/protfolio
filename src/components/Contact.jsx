@@ -6,26 +6,19 @@ import { styles } from "../styles";
 import { EarthCanvas } from "./canvas";
 import { SectionWrapper } from "../hoc";
 import { slideIn } from "../utils/motion";
-import { fetchUserData } from "../utils/util";
+import { fetch } from "../utils/util";
 
 const Contact = () => {
   const formRef = useRef();
   const [form, setForm] = useState({
-    name: "",
-    email: "",
+    senderName: "",
+    senderEmail: "",
     message: "",
   });
 
   const [loading, setLoading] = useState(false);
   const [userData, setUSerData] = useState({});
   const [submitted, setSubmitted] = useState(false);
-
-  useEffect(() => {
-    fetchUserData()
-      .then((res) => res.json())
-      .then((data) => setUSerData(data))
-      .catch(() => "");
-  }, []);
 
   const handleChange = (e) => {
     submitted && setSubmitted(false);
@@ -41,51 +34,19 @@ const Contact = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    const {
-      city,
-      country_name,
-      country_code,
-      country_calling_code,
-      country_capital,
-      currency,
-      ip,
-      latitude,
-      longitude,
-      region,
-    } = userData;
-
-    fetch(
-      "https://potfolio-backend-default-rtdb.firebaseio.com/requests.json",
-      {
-        method: "POST",
-        Headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          ...form,
-          metaData: {
-            city,
-            country_name,
-            country_code,
-            country_calling_code,
-            country_capital,
-            currency,
-            ip,
-            latitude,
-            longitude,
-            region,
-          },
-        }),
-      }
-    ).finally(() => {
+    try {
+      const reqBody = {
+        ...form,
+        visitorId: localStorage.getItem("visitorId"),
+        to: localStorage.getItem("email"),
+      };
+      console.log({ reqBody });
+      await fetch("POST", "message", { ...reqBody });
       setLoading(false);
       setSubmitted(true);
-      setForm({
-        name: "",
-        email: "",
-        message: "",
-      });
-    });
+    } catch (err) {
+      setLoading(false);
+    }
   };
 
   return (
@@ -108,8 +69,8 @@ const Contact = () => {
             <span className="text-white font-medium mb-4">Your Name</span>
             <input
               type="text"
-              name="name"
-              value={form.name}
+              name="senderName"
+              value={form.senderName}
               maxlength="20"
               onChange={handleChange}
               required
@@ -121,8 +82,8 @@ const Contact = () => {
             <span className="text-white font-medium mb-4">Your email</span>
             <input
               type="email"
-              name="email"
-              value={form.email}
+              name="senderEmail"
+              value={form.senderEmail}
               maxlength="20"
               onChange={handleChange}
               required
@@ -153,7 +114,7 @@ const Contact = () => {
           )}
           {submitted && (
             <p className="text-white font-medium mb-4 r">
-              Request delivered succesfully!
+              Message delivered succesfully!
             </p>
           )}
         </form>
