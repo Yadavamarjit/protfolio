@@ -40,7 +40,7 @@ const Contact = () => {
         visitorId: localStorage.getItem("visitorId"),
         to: localStorage.getItem("email"),
       };
-      console.log({ reqBody });
+
       await fetch("POST", "message", { ...reqBody });
       setLoading(false);
       setSubmitted(true);
