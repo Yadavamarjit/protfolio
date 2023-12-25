@@ -97,7 +97,7 @@ export const getUserName = () => {
   }
 };
 
-export function changeFavicon(newFaviconUrl) {
+export function changeFaviconAndTitle(newFaviconUrl, newTitle) {
   const favicon = document.querySelector('link[rel="icon"]');
   if (favicon) {
     favicon.href = newFaviconUrl;
@@ -107,4 +107,6 @@ export function changeFavicon(newFaviconUrl) {
     newFavicon.href = newFaviconUrl;
     document.head.appendChild(newFavicon);
   }
+
+  document.title = newTitle;
 }
