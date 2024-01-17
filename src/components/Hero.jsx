@@ -2,22 +2,16 @@ import { motion } from "framer-motion";
 
 import { styles } from "../styles";
 import { useEffect, useState } from "react";
+import { useUserContext } from "../context/UserProvider";
+import { getParagraphFromText } from "../utils/util";
 
 const Hero = () => {
+  const { basicInfo } = useUserContext();
+  const { name, techStacks, subHeader } = basicInfo;
   const [text, setText] = useState("");
-  const techStack = [
-    "JavaScript",
-    "ReactJs",
-    "NodeJs",
-    "ExpressJs",
-    "Python",
-    "AWS",
-    "Fire Base",
-    "GraphQL",
-    "MongoDB",
-  ];
+
   const [phraseIndex, setPhraseIndex] = useState(0);
-  const currentPhrase = techStack[phraseIndex];
+  const currentPhrase = techStacks[phraseIndex];
   const speed = 50;
 
   useEffect(() => {
@@ -28,13 +22,13 @@ const Hero = () => {
     if (text === currentPhrase) {
       clearTimeout(timer);
       setTimeout(() => {
-        setPhraseIndex((phraseIndex + 1) % techStack.length);
+        setPhraseIndex((phraseIndex + 1) % techStacks.length);
         setText("");
       }, 1500); // Wait for 1.5 seconds before displaying the next phrase
     }
 
     return () => clearTimeout(timer);
-  }, [text, currentPhrase, phraseIndex, techStack]);
+  }, [text, currentPhrase, phraseIndex, techStacks]);
   return (
     <section className={`relative w-full h-screen mx-auto`}>
       <div
@@ -47,12 +41,15 @@ const Hero = () => {
 
         <div>
           <h1 className={`${styles.heroHeadText} text-white`}>
-            Hi, I'm <span className="text-[#915EFF]">Yadav Amarjit</span>
+            Hi, I'm <span className="text-[#915EFF]">{name}</span>
           </h1>
-          <p className={`${styles.heroSubText} mt-2 text-white-100`}>
-            Fullstack Dev, crafting seamless experiences.
-            <br className="sm:block hidden" /> Innovator and problem solver.
-          </p>
+
+          {getParagraphFromText(subHeader).map((data) => (
+            <p className={`${styles.heroSubText} mt-2 text-white-100`}>
+              {data}
+            </p>
+          ))}
+
           <p className={`${styles.heroSubText} mt-2 text-white-100`}>
             I craft applications using{" "}
             <span className="text-[#FFF78A]">{text + "."}</span>

@@ -71,7 +71,7 @@ const Contact = () => {
               type="text"
               name="senderName"
               value={form.senderName}
-              maxlength="20"
+              maxLength="20"
               onChange={handleChange}
               required
               placeholder="What's your good name?"
@@ -84,7 +84,7 @@ const Contact = () => {
               type="email"
               name="senderEmail"
               value={form.senderEmail}
-              maxlength="20"
+              maxLength="20"
               onChange={handleChange}
               required
               placeholder="What's your web address?"
@@ -97,7 +97,7 @@ const Contact = () => {
               rows={7}
               name="message"
               value={form.message}
-              maxlength="250"
+              maxLength="250"
               onChange={handleChange}
               placeholder="What you want to say?"
               className="bg-tertiary py-4 px-6 placeholder:text-secondary text-white rounded-lg outline-none border-none font-medium"

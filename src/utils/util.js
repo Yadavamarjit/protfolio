@@ -2,15 +2,23 @@ import axios from "axios";
 
 const adminUrl = import.meta.env.VITE_APP_ADMIN_API;
 
-export const getYearMonthDifference = (inputDate) => {
-  const currentDate = new Date(2023, 7, 21);
-  const inputDateParts = inputDate.split(":");
-  const inputYear = parseInt(inputDateParts[2]);
-  const inputMonth = parseInt(inputDateParts[1]) - 1; // JavaScript months are zero-indexed
-  const inputDay = parseInt(inputDateParts[0]);
+export const getYearMonthDifference = (joiningDate, lastDate) => {
+  const currentDate = new Date(lastDate);
+  const inputDateParts = joiningDate.split("-");
+  const inputYear = parseInt(inputDateParts[0]);
+  const inputMonth = parseInt(inputDateParts[1]) - 1;
+  const inputDay = parseInt(inputDateParts[2]);
 
   const inputDateObject = new Date(inputYear, inputMonth, inputDay);
   const timeDifference = currentDate - inputDateObject;
+
+  const startYear = inputDateObject.getFullYear();
+  const startMonth = inputDateObject.toLocaleString("default", {
+    month: "short",
+  });
+
+  const endYear = currentDate.getFullYear();
+  const endMonth = currentDate.toLocaleString("default", { month: "short" });
 
   const years = Math.floor(timeDifference / (365.25 * 24 * 60 * 60 * 1000));
   const months = Math.floor(
@@ -18,7 +26,7 @@ export const getYearMonthDifference = (inputDate) => {
       (30.44 * 24 * 60 * 60 * 1000)
   );
 
-  return `${years} years ${months} months`;
+  return `${startMonth} ${startYear} - ${endMonth} ${endYear} (${years} years ${months} months)`;
 };
 
 export const fetchvisitorData = async () => {
@@ -110,3 +118,44 @@ export function changeFaviconAndTitle(newFaviconUrl, newTitle) {
 
   document.title = newTitle;
 }
+
+export const getParagraphFromText = (text) => text.split("<br>");
+
+export const getRandomColor = () => {
+  let previousColors = [];
+
+  return () => {
+    const colorArray = [
+      "text-blue-500",
+      "text-green-500",
+      "text-pink-500",
+      "text-orange-500",
+      "text-yellow-500",
+      "text-purple-500",
+      "text-red-500",
+      "text-cyan-500",
+      "text-teal-500",
+      "text-lime-500",
+      "text-pink-500",
+    ];
+
+    // Filter out previously used colors
+    const availableColors = colorArray.filter(
+      (color) => !previousColors.includes(color)
+    );
+
+    // If all colors have been used, reset the array
+    if (availableColors.length === 0) {
+      previousColors = [];
+    }
+
+    // Get a random index from the available colors
+    const randomIndex = Math.floor(Math.random() * availableColors.length);
+
+    // Get the random color and add it to the previously used colors
+    const randomColor = availableColors[randomIndex];
+    previousColors.push(randomColor);
+
+    return randomColor;
+  };
+};

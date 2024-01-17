@@ -4,11 +4,14 @@ import { Link } from "react-router-dom";
 import { styles } from "../styles";
 import { navLinks } from "../constants";
 import { logo, menu, close } from "../assets";
+import { useUserContext } from "../context/UserProvider";
 
 const Navbar = () => {
   const [active, setActive] = useState("");
   const [toggle, setToggle] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const { basicInfo } = useUserContext();
+  const { name, profession, profilePic } = basicInfo;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -42,10 +45,10 @@ const Navbar = () => {
             window.scrollTo(0, 0);
           }}
         >
-          <img src={logo} alt="logo" className="w-9 h-9 object-contain" />
+          <img src={profilePic} alt="logo" className="w-9 h-9 object-contain" />
           <p className="text-white text-[18px] font-bold cursor-pointer flex ">
-            Yadav Amarjit &nbsp;
-            <span className="sm:block hidden"> | Software Developer</span>
+            {name} &nbsp;
+            <span className="sm:block hidden"> | {profession}</span>
           </p>
         </Link>
 

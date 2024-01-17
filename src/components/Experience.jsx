@@ -8,10 +8,10 @@ import { motion } from "framer-motion";
 import "react-vertical-timeline-component/style.min.css";
 
 import { styles } from "../styles";
-import { experiences } from "../constants";
 import { SectionWrapper } from "../hoc";
 import { textVariant } from "../utils/motion";
-import { getYearMonthDifference } from "../utils/util";
+import { getParagraphFromText, getYearMonthDifference } from "../utils/util";
+import { useUserContext } from "../context/UserProvider";
 
 const ExperienceCard = ({ experience }) => {
   return (
@@ -21,30 +21,33 @@ const ExperienceCard = ({ experience }) => {
         color: "#fff",
       }}
       contentArrowStyle={{ borderRight: "7px solid  #232631" }}
-      date={`${experience.date}  ( ${getYearMonthDifference("04:10:2021")} )`}
+      date={` ${getYearMonthDifference(
+        experience.joiningDate,
+        experience.lastDate
+      )} `}
       iconStyle={{ background: experience.iconBg }}
       icon={
         <div className="flex justify-center items-center w-full h-full">
           <img
-            src={experience.icon}
-            alt={experience.company_name}
+            src={experience.companyLogo}
+            alt={experience.companyName}
             className="w-[60%] h-[60%] object-contain rounded-full"
           />
         </div>
       }
     >
       <div>
-        <h3 className="text-white text-[24px] font-bold">{experience.title}</h3>
+        <h3 className="text-white text-[24px] font-bold">{experience.role}</h3>
         <p
           className="text-secondary text-[16px] font-semibold"
           style={{ margin: 0 }}
         >
-          {experience.company_name}
+          {experience.companyName}
         </p>
       </div>
 
       <ul className="mt-5 list-disc ml-5 space-y-2">
-        {experience.points.map((point, index) => (
+        {getParagraphFromText(experience.roleDetails).map((point, index) => (
           <li
             key={`experience-point-${index}`}
             className="text-white-100 text-[14px] pl-1 tracking-wider"
@@ -58,6 +61,7 @@ const ExperienceCard = ({ experience }) => {
 };
 
 const Experience = () => {
+  const { experiences } = useUserContext();
   return (
     <>
       <motion.div variants={textVariant()}>
