@@ -3,7 +3,7 @@ import axios from "axios";
 const adminUrl = import.meta.env.VITE_APP_ADMIN_API;
 
 export const getYearMonthDifference = (joiningDate, lastDate) => {
-  const currentDate = new Date(lastDate);
+  const currentDate = lastDate ? new Date(lastDate) : new Date(); // Use current date if lastDate is empty
   const inputDateParts = joiningDate.split("-");
   const inputYear = parseInt(inputDateParts[0]);
   const inputMonth = parseInt(inputDateParts[1]) - 1;
