@@ -3,7 +3,7 @@ import axios from "axios";
 const adminUrl = import.meta.env.VITE_APP_ADMIN_API;
 
 export const getYearMonthDifference = (joiningDate, lastDate) => {
-  const currentDate = lastDate ? new Date(lastDate) : new Date(); // Use current date if lastDate is empty
+  const currentDate = lastDate ? new Date(lastDate) : new Date();
   const inputDateParts = joiningDate.split("-");
   const inputYear = parseInt(inputDateParts[0]);
   const inputMonth = parseInt(inputDateParts[1]) - 1;
@@ -25,8 +25,26 @@ export const getYearMonthDifference = (joiningDate, lastDate) => {
     (timeDifference % (365.25 * 24 * 60 * 60 * 1000)) /
       (30.44 * 24 * 60 * 60 * 1000)
   );
+  const days = Math.floor(
+    (timeDifference % (30.44 * 24 * 60 * 60 * 1000)) / (24 * 60 * 60 * 1000)
+  );
 
-  return `${startMonth} ${startYear} - ${endMonth} ${endYear} (${years} years ${months} months)`;
+  let result = `${startMonth} ${startYear} - ${endMonth} ${endYear} (`;
+
+  if (years > 0) {
+    result += `${years} years `;
+  }
+  if (months > 0) {
+    result += `${months} months `;
+  }
+  if (days > 0) {
+    result += `${days} days `;
+  }
+
+  // Remove trailing space and add closing parenthesis
+  result = result.trim() + ")";
+
+  return result;
 };
 
 export const fetchvisitorData = async () => {

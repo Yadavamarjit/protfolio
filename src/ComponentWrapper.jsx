@@ -10,12 +10,13 @@ import {
   Works,
 } from "./components";
 import { useUserContext } from "./context/UserProvider";
+import PreLoader from "./components/Preloader/PreLoader";
 
 export default function ComponentWrapper() {
   const { userLoading } = useUserContext();
   return (
     <>
-      {!userLoading && (
+      {!userLoading ? (
         <div className="relative z-0 bg-primary">
           <div className="bg-hero-pattern bg-cover bg-no-repeat bg-center">
             <Navbar />
@@ -30,6 +31,8 @@ export default function ComponentWrapper() {
             <StarsCanvas />
           </div>
         </div>
+      ) : (
+        <PreLoader />
       )}
     </>
   );
