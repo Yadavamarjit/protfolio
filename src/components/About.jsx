@@ -51,7 +51,7 @@ const About = () => {
     subHeader,
     overView,
   } = basicInfo;
-  console.log(getParagraphFromText(overView));
+
   return (
     <>
       <motion.div variants={textVariant()}>
