@@ -1,4 +1,5 @@
 import axios from "axios";
+import DeviceDetector from "device-detector-js";
 
 const adminUrl = import.meta.env.VITE_APP_ADMIN_API;
 
@@ -48,30 +49,41 @@ export const getYearMonthDifference = (joiningDate, lastDate) => {
 };
 
 export const fetchvisitorData = async () => {
-  const {
-    city,
-    country_name,
-    country_code,
-    country_calling_code,
-    country_capital,
-    currency,
-    ip,
-    latitude,
-    longitude,
-    region,
-  } = await fetch("GET", "", {}, {}, {}, "https://ipapi.co/json/");
-  return {
-    city,
-    country_name,
-    country_code,
-    country_calling_code,
-    country_capital,
-    currency,
-    ip,
-    latitude,
-    longitude,
-    state: region,
-  };
+  try {
+    const {
+      city,
+      country_name,
+      country_code,
+      country_calling_code,
+      country_capital,
+      currency,
+      ip,
+      latitude,
+      longitude,
+      region,
+    } = await fetch("GET", "", {}, {}, {}, "https://ipapi.co/json/");
+
+    const agent = navigator.userAgent;
+    const deviceDetector = new DeviceDetector();
+    let device = deviceDetector.parse(agent);
+
+    return {
+      city,
+      country_name,
+      country_code,
+      country_calling_code,
+      country_capital,
+      currency,
+      ip,
+      latitude,
+      longitude,
+      state: region,
+      device: JSON.stringify(device),
+      date: new Date(),
+    };
+  } catch (err) {
+    console.error(err);
+  }
 };
 
 export const fetch = async (
