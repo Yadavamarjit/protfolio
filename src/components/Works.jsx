@@ -10,7 +10,7 @@ import { fadeIn, textVariant } from "../utils/motion";
 import { useUserContext } from "../context/UserProvider";
 import { getRandomColor } from "../utils/util";
 
-const ProjectCard = ({ index, projectName, description, techs, img }) => {
+const ProjectCard = ({ index, projectName, description, techs, img, link }) => {
   return (
     <motion.div variants={fadeIn("up", "spring", index * 0.5, 0.75)}>
       <Tilt
@@ -32,7 +32,19 @@ const ProjectCard = ({ index, projectName, description, techs, img }) => {
         </div>
 
         <div className="mt-5">
-          <h3 className="text-white font-bold text-[24px]">{projectName}</h3>
+          <div className="flex items-center justify-between w-full">
+            <h3 className="text-white font-bold text-[24px]">{projectName}</h3>
+            {link && (
+              <div className="flex justify-end">
+                <button
+                  onClick={() => window.open(link, "_blank")}
+                  className={`bg-[#9ca3af24]/10 text-white font-bold text-[14px] py-2 px-4 rounded-md hover:scale-110 transition-transform duration-300`}
+                >
+                  Visit Site
+                </button>
+              </div>
+            )}
+          </div>
           <p className="mt-2 text-secondary text-[14px]">{description}</p>
         </div>
 
